@@ -1,4 +1,4 @@
-# baseURI: http://tinyml-schema.org/tiny-demo/ms200-322-000-000-002
+# baseURI: https://w3id.org/tinyml-schema/neural-network-schema/tiny-demo/ms200-322-000-000-002
 
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -11,10 +11,10 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
 
-@prefix s3n_extend: <http://tinyml-schema.org/s3n_extend/> .
-@prefix sosa_extend: <http://tinyml-schema.org/sosa_extend/> .
+@prefix s3n_extend: <https://w3id.org/tinyml-schema/neural-network-schema/s3n_extend/> .
+@prefix sosa_extend: <https://w3id.org/tinyml-schema/neural-network-schema/sosa_extend/> .
 
-<http://tinyml-schema.org/tinyml-demo/ms200-322-000-000-002>
+<https://w3id.org/tinyml-schema/neural-network-schema/tinyml-demo/ms200-322-000-000-002>
   rdf:type s3n:SmartSensor ;
   ssn:hasSubSystem [
       rdf:type sosa_extend:Thermometer ;
@@ -50,7 +50,7 @@
   td:hasPropertyAffordance [
       td:description "Temperature data."@en ;
       td:hasForm [
-          td:href "http://tinyml-schema.org/tinyml-demo/ms200-322-000-000-002/temperature"@en ;
+          td:href "https://w3id.org/tinyml-schema/neural-network-schema/tinyml-demo/ms200-322-000-000-002/temperature"@en ;
           td:op "observeproperty"@en ;
           td:op "readproperty"@en ;
         ] ;
@@ -65,7 +65,7 @@
   td:hasPropertyAffordance [
       td:description "Acceleration data."@en ;
       td:hasForm [
-          td:href "http://tinyml-schema.org/tinyml-demo/ms200-322-000-000-002/acceleration"@en ;
+          td:href "https://w3id.org/tinyml-schema/neural-network-schema/tinyml-demo/ms200-322-000-000-002/acceleration"@en ;
           td:op "observeproperty"@en ;
           td:op "readproperty"@en ;
         ] ;
@@ -80,7 +80,7 @@
   td:hasPropertyAffordance [
 	  td:description "Orientation data."@en ;
 	  td:hasForm [
-		  td:href "http://tinyml-schema.org/tinyml-demo/ms200-322-000-000-002/orientation"@en ;
+		  td:href "https://w3id.org/tinyml-schema/neural-network-schema/tinyml-demo/ms200-322-000-000-002/orientation"@en ;
 		  td:op "observeproperty"@en ;
 		  td:op "readproperty"@en ;
 		] ;
@@ -95,7 +95,7 @@
   td:hasPropertyAffordance [
 	  td:description "Magnitude data."@en ;
 	  td:hasForm [
-		  td:href "http://tinyml-schema.org/tinyml-demo/ms200-322-000-000-002/Magnitude"@en ;
+		  td:href "https://w3id.org/tinyml-schema/neural-network-schema/tinyml-demo/ms200-322-000-000-002/Magnitude"@en ;
 		  td:op "observeproperty"@en ;
 		  td:op "readproperty"@en ;
 		] ;

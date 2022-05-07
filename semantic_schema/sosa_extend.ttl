@@ -1,6 +1,6 @@
-# baseURI: http://tinyml-schema.org/sosa_extend/
+# baseURI: https://w3id.org/tinyml-schema/neural-network-schema/sosa_extend/
 
-@prefix : <http://tinyml-schema.org/sosa_extend/> .
+@prefix : <https://w3id.org/tinyml-schema/neural-network-schema/sosa_extend/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -9,7 +9,7 @@
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-@prefix sosa_extend: <http://tinyml-schema.org/sosa_extend/> .
+@prefix sosa_extend: <https://w3id.org/tinyml-schema/neural-network-schema/sosa_extend/> .
 
 :Accelerometer
   rdf:type owl:Class ;

@@ -17,12 +17,12 @@ cmd = "./find-arena-size Hello_World.tflite"
 # Create namespace for none-supported namespace by rdflib
 SOSA = Namespace("http://www.w3.org/ns/sosa/")
 SSN = Namespace("http://www.w3.org/ns/ssn/")
-nnet = Namespace("http://tinyml-schema.org/networkschema#")
+nnet = Namespace("https://w3id.org/tinyml-schema/neural-network-schema#")
 s3n = Namespace("http://w3id.org/s3n/")
 ssn_system = Namespace("http://www.w3.org/ns/ssn/systems/")
-ssn_extend = Namespace("http://tinyml-schema.org/ssn_extend/")
-sosa_extend = Namespace("http://tinyml-schema.org/sosa_extend/")
-s3n_extend = Namespace("http://tinyml-schema.org/s3n_extend/")
+ssn_extend = Namespace("https://w3id.org/tinyml-schema/neural-network-schema/ssn_extend/")
+sosa_extend = Namespace("https://w3id.org/tinyml-schema/neural-network-schema/sosa_extend/")
+s3n_extend = Namespace("https://w3id.org/tinyml-schema/neural-network-schema/s3n_extend/")
 om = Namespace("http://www.ontology-of-units-of-measure.org/resource/om-2/")
 
 # Create a Graph
@@ -62,15 +62,15 @@ def tflite2semantic(path_, nameOfNN_, sensor_list_, sensor_info_, metrics_, metr
         idOfNN = str(uuid.uuid4())
 
     # ----------- semantic handling 1 -----------
-    neuralNetwork = URIRef("http://tinyml-schema.org/neuralnetwork/" + idOfNN)
+    neuralNetwork = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/" + idOfNN)
 
-    inputOfNN = URIRef("http://tinyml-schema.org/neuralnetwork/input_" + idOfNN)
-    outputOfNN = URIRef("http://tinyml-schema.org/neuralnetwork/output_" + idOfNN)
-    metricOfNN = URIRef("http://tinyml-schema.org/neuralnetwork/metric_1_" + idOfNN)
-    procedureFeature_1 = URIRef("http://tinyml-schema.org/neuralnetwork/procedureFeature_1_" + idOfNN)
-    condition_1 = URIRef("http://tinyml-schema.org/neuralnetwork/condition_1_" + idOfNN)
-    procedureFeature_2 = URIRef("http://tinyml-schema.org/neuralnetwork//procedureFeature_2_" + idOfNN)
-    condition_2 = URIRef("http://tinyml-schema.org/neuralnetwork/condition_2_" + idOfNN)
+    inputOfNN = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/input_" + idOfNN)
+    outputOfNN = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/output_" + idOfNN)
+    metricOfNN = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/metric_1_" + idOfNN)
+    procedureFeature_1 = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/procedureFeature_1_" + idOfNN)
+    condition_1 = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/condition_1_" + idOfNN)
+    procedureFeature_2 = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork//procedureFeature_2_" + idOfNN)
+    condition_2 = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/condition_2_" + idOfNN)
 
     # NN model metadata
     g.add((neuralNetwork, RDF.type, nnet.NeuralNetwork))
@@ -104,7 +104,7 @@ def tflite2semantic(path_, nameOfNN_, sensor_list_, sensor_info_, metrics_, metr
         return CODE2HARDWARE[code]
 
     for i, value in enumerate(sensor_list_):
-        sensorOfNN = URIRef("http://tinyml-schema.org/neuralnetwork/sensor" + "_" + "{}".format(i + 1) + "_" + idOfNN)
+        sensorOfNN = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/sensor" + "_" + "{}".format(i + 1) + "_" + idOfNN)
         g.add((sensorOfNN, RDF.type, addHardware(value)))
         g.add((sensorOfNN, RDF.type, SDO.Sensor))
         g.add((sensorOfNN, sosa_extend.hasSensorInfo, Literal(sensor_info_)))
@@ -387,18 +387,18 @@ def tflite2semantic(path_, nameOfNN_, sensor_list_, sensor_info_, metrics_, metr
 
             if j == 0:
                 # First layer is input layer
-                inputLayer = URIRef("http://tinyml-schema.org/neuralnetwork/inputLayer_" + idOfNN)
+                inputLayer = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/inputLayer_" + idOfNN)
                 g.add((neuralNetwork, nnet.inputLayer, inputLayer))
                 addCommonInfo(inputLayer, input_layer=True)
                 g.add((inputLayer, nnet.hasIndex, Literal(j+1)))
             elif j == (graph.OperatorsLength() - 1):
                 # Last layer is output layer
-                outputLayer = URIRef("http://tinyml-schema.org/neuralnetwork/outputLayer_" + idOfNN)
+                outputLayer = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/outputLayer_" + idOfNN)
                 g.add((neuralNetwork, nnet.outputLayer, outputLayer))
                 addCommonInfo(outputLayer, output_layer=True)
                 g.add((outputLayer, nnet.hasIndex, Literal(j+1)))
             else:
-                middleLayer = URIRef("http://tinyml-schema.org/neuralnetwork/middleLayer_" + "{}_".format(j) + idOfNN)
+                middleLayer = URIRef("https://w3id.org/tinyml-schema/neural-network-schema/neuralnetwork/middleLayer_" + "{}_".format(j) + idOfNN)
                 g.add((neuralNetwork, nnet.middleLayer, middleLayer))
                 g.add((middleLayer, nnet.hasIndex, Literal(j)))
                 addCommonInfo(middleLayer)
