@@ -29,8 +29,8 @@ To be added
 * requirements.txt: use `pip install -r requirements.txt` to install required packages
 * semantic_querying.py: use SPARQL to query the Knowledge Graph hosted in GraphDB
 * semantic_utils.py
-* tflite2semantic_parser_xlsx.py: generate semantic representations of the NN models stored in the folder [collected_models](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) against the [proposed semantic schema](## Semantic Schema of Neural Network) combining the information provided in `models_information.xlsx`
-* tflite2semantic_user_input.py: generate a semantic representation for each given NN model against the [proposed semantic schema](## Semantic Schema of Neural Network) by asking users a few questions
+* tflite2semantic_parser_xlsx.py: generate semantic representations of the NN models stored in the folder [collected_models](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) against the [proposed semantic schema](#semantic-schema-of-neural-network) combining the information provided in `models_information.xlsx`
+* tflite2semantic_user_input.py: generate a semantic representation for each given NN model against the [proposed semantic schema](#semantic-schema-of-neural-network) by asking users a few questions
 
 ## Use
 
@@ -47,7 +47,7 @@ Install the dependency:
 pip install -r requirement.txt
 ```
 
-Run `tflite2semantic_parser_xlsx.py` to see how the collected models in the [model_repo](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) can be parsed into semantic representations against the [proposed semantic schema](## Semantic Schema of Neural Network) combining the information provided in `models_information.xlsx` in one go. Please be aware that the order of the models listed in the the folder `collected_models` and in the information sheet `models_information.xlsx` should both be in alphabetic order and match with each other.
+Run `tflite2semantic_parser_xlsx.py` to see how the collected models in the [model_repo](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) can be parsed into semantic representations against the [proposed semantic schema](#semantic-schema-of-neural-network) combining the information provided in `models_information.xlsx` in one go. Please be aware that the order of the models listed in the the folder `collected_models` and in the information sheet `models_information.xlsx` should both be in alphabetic order and match with each other.
 
 Run `tflite2semantic_user_input.py` to see how each model can be parsed into semantic representation by answering a few questions in the CMD.
 
