@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The TinyML Neural Network Ontology</title>
+    <style>
+        #pylode {
+            position: fixed;
+            top: 130px;
+            left: -80px;
+            font-size: small;
+            transform: rotate(-90deg);
+            color: grey;
+        }
+        #pylode a {
+            font-size: 2em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #005A9C;
+        }
+        #pylode a:hover {
+            color: #333;
+        }
+        #pylode #p {
+            color: #329545;
+        }
+        #pylode #y {
+            color: #f9cb33;
+        }
+        #pylode #version {
+            font-size: 1.0em;
+        }
+
+        .cardinality {
+            font-style: italic;
+            color: #aa00aa;
+        }
+
+        dl {
+            /*border: 1px solid navy;*/
+            /*padding:5px;*/
+        }
+
+        dt {
+            font-weight: bold;
+            padding: 0;
+        }
+
+        dd {
+            margin-bottom: 10px;
+            padding-top: 7px;
+        }
+
+        #metadata ul,
+        #classes ul {
+            list-style-type: none;
+        }
+
+        #metadata ul li,
+        #classes ul li {
+            margin-left: -40px;
+        }
+
+        ul.hlist {
+            list-style-type: none;
+            border: 1px solid navy;
+            padding:5px;
+            background-color: #F4FFFF;
+        }
+
+        ul.hierarchy {
+            border: 1px solid navy;
+            padding: 5px 25px 5px 25px;
+            background-color: #F4FFFF;
+        }
+
+
+        ul.hlist li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        .entity {
+            border: 1px solid navy;
+            margin:5px 0 5px 0;
+            padding: 5px;
+        }
+
+        .entity th {
+            width: 150px;
+            vertical-align: top;
+        }
+
+        .entity th,
+        .entity td {
+            padding-bottom: 20px;
+        }
+
+        .entity table th {
+            text-align: left;
+        }
+
+        section#overview img {
+            max-width: 1000px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-align: left
+        }
+        h1, h2, h3 {
+            color: #005A9C; background: white
+        }
+        h1 {
+            font: 170% sans-serif;
+            line-height: 110%;
+        }
+        h2 {
+            font: 140% sans-serif;
+            margin-top:40px;
+        }
+        h3 {
+            font: 120% sans-serif;
+            margin-top: 20px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid navy;
+        }
+        h4 { font: bold 100% sans-serif }
+        h5 { font: italic 100% sans-serif }
+        h6 { font: small-caps 100% sans-serif }
+
+        body {
+            padding: 2em 70px 2em 70px;
+            margin: 0;
+            font-family: sans-serif;
+            color: black;
+            background: white;
+            background-position: top left;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            text-align: justify;
+        }
+
+        section {
+            max-width: 1500px;
+        }
+
+        .figure {
+            margin-bottom: 20px;
+        }
+
+        :link { color: #00C; background: transparent }
+        :visited { color: #609; background: transparent }
+        a:active { color: #C00; background: transparent }
+
+        .sup-c,
+        .sup-op,
+        .sup-fp,
+        .sup-dp,
+        .sup-ap,
+        .sup-p,
+        .sup-ni,
+        .sup-con,
+        .sup-col {
+            cursor:help;
+        }
+
+        .sup-c {
+            color:orange;
+        }
+
+        .sup-op {
+            color:navy;
+        }
+
+        .sup-fp {
+            color:lightskyblue;
+        }
+
+        .sup-dp {
+            color:green;
+        }
+
+        .sup-ap {
+            color:darkred;
+        }
+
+        .sup-p {
+            color:black;
+        }
+
+        .sup-ni {
+            color:brown;
+        }
+
+        .sup-con {
+            color:orange;
+        }
+
+        .sup-col {
+            color:darkred;
+        }
+
+        sup {
+            margin-left: -3px;
+        }
+        code {
+            font-size: large;
+            color: darkred;
+        }
+
+        /* less prominent links for properties */
+        .proplink {
+            color: #336;
+            text-decoration: none;
+        }
+
+#toc {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    border: solid 1px navy;
+    font-size: small;
+    width: 180px;
+}
+#toc h3 {
+    margin-top: 5px;
+}
+
+#toc ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#toc .first > li {
+    margin-top: 5px;
+}
+
+#toc .second,
+#toc .third {
+    padding-left: 10px;
+}
+
+#content {
+    width: calc(100% - 150px);
+}
+
+.hover_property {
+    cursor: help;
+    text-decoration: none;
+    border-bottom: dashed 1px;
+}
+
+.setclass {
+    list-style-type: none;
+}
+	</style>
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhklEQVQ4jbWPzStEURjG3yQLirlGKUnKFO45Z+SjmXvnnmthQcpCoVhYmD/AwmJiI3OvZuZc2U3UlKU0/gAslMw9JgvhHxAr2fko7r0jHSsl+TgbTz2Lt5731/MASEiJW9ONml2QyX6rsGalmnT74v8BDf12hxJfpV8d1uwNKUBYszabdFv84L8B9X0rESVmmUup2fme0cVhJWaZHw4NWL1SewEAfDe6H3Dy6Ll456WEJsRZS630MwCAOI20ei5OBpxse5zcBZw8eS4uPpfIuDiCainIg9umBCU0GZzgLZ9Hn31OgoATL+CkLDGB5H1OKj4nFd/FBxUXJ0UZNb4edw/6nLyJXaj5FeCVyPLNIVmYK8TG1IwWb16L1gEACAFV90ftoT8bdOX0EeyY99gxBXZMgRz6qGb1KantAACI0UvE6F5XJqEjpsdURouI0Vt5gGOUkUNnPu7ObGIIMfNaGqDmjDRi9FZldF1lRgYzeqUyeoiY4ag5Iy3RgOYRM8+/M2bG8efsO4hGrpmJseyMAAAAAElFTkSuQmCC" rel="icon" sizes="16x16" type="image/png">
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC40lEQVRYhe2UT0hUQRzHp6Iss1B3VZKIDbbdfW9mnoi4f3zzjkJQeOgS0SEIb1EWBGGlLLu460zQPQM1unUIIjA6rfpm6ZAhHjoIRVQUFUlEbG+euTsdXG1d3VL3bVD4g+9h+L35fT/8fvN7ADgY9aHY5fpIvK82HO9ysu66wxWOzbkjcekKx0a2ALYA/n2AGi3a6ArFezcidziecQygNhhrcUficjP6PwBqtGijKxy/thnVBePHywYoDsFhl53GV8SEcsTx4usCMLUewTVpc23BNvEzm6Neyf1+KcG2vwqwUjgrOJq2JmHftwmkVBRGTvncFodnbI7vChO/FRznCmHsNM7aHM9Yk7Df5iqsLMw9sMNOK2g+jS4IEz0UJv4iuJZb2RltWnB4UZqH6ioGAgAAGe5vtiZhtzDx7OoRadLmeM7m6IRjhnLMW2Vx1bA5GhAmnhIcz6/xNj4Ujsky8UspwfayjDPjsF2Y6L7N8Vzx/BfP+KPg6LbgSqd8DnfJW2CnbaLhfH5ephpqygJYvQU4Z3P82TLRsDDhUTnmrSq+Y3N0Mg+Xldy/zwEAnLMWZ3pHpNExmfLs/t0dOdVcbT0JeKxUwFP2VljjqiE47Jp53LTXNxhsUZjerTByXWX6VZWRs/4bIQ2ACv+UAomgDzLCISNZxAxZKMhIDjLy1JfsaK+I+eGBUBNk5E2x8RogX/PdcDZUqieWTSh5D6nOVKqfhoycUmlHFFIyu5RXqf7AcQDISCpv/tqbMBqK883RtmpISRoxQyJKPgGn3wNk5NEigDFa6hslqV/Kj+FdBQD0bshIDlKSLlVcoWQo36UhR80BAMB73lulMn0EMpJTqD6qJiOt3mho/8GbkT2BZNgDB/V+RI0fkOrT3kRIVQbaDizJm2hdNbINBxwk5xAj3yEjuV9rZ1iIkgxixkLBA83mz8uCjLwoGwAx0vOnFSy5mtR4VTaAQvVORMnwZgSpzkrV/QmdE2tKe46+MQAAAABJRU5ErkJggg==" rel="icon" sizes="32x32" type="image/png">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script id="schema.org" type="application/ld+json">
+[
+  {
+    "@id": "https://w3id.org/tinyml-schema/neural-network-schema#",
+    "@type": [
+      "https://schema.org/DefinedTermSet"
+    ],
+    "https://schema.org/creator": [
+      {
+        "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b1"
+      },
+      {
+        "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b2"
+      },
+      {
+        "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b3"
+      }
+    ],
+    "https://schema.org/dateIssued": [
+      {
+        "@value": "2022-01-14"
+      }
+    ],
+    "https://schema.org/description": [
+      {
+        "@value": "This is a schema for semantically describing artificial neural networks aligned with the World Wide Web Consortium (W3C) Thing Description, which semantically describes IoT devices. Our goal is to enable the joint management of TinyML models and IoT devices at scale, from modeling information to discovering possible combinations and benchmarking, and eventually facilitate TinyML component exchange and reuse."
+      }
+    ],
+    "https://schema.org/name": [
+      {
+        "@value": "The TinyML Neural Network Ontology"
+      }
+    ]
+  },
+  {
+    "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b1",
+    "https://schema.org/name": [
+      {
+        "@language": "en",
+        "@value": "Haoyu Ren"
+      }
+    ]
+  },
+  {
+    "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b2",
+    "https://schema.org/name": [
+      {
+        "@language": "en",
+        "@value": "Darko Anicic"
+      }
+    ]
+  },
+  {
+    "@id": "_:n9f64096aa94d46f89997fc65f8ceb701b3",
+    "https://schema.org/name": [
+      {
+        "@language": "en",
+        "@value": "Thomas A. Runkler"
+      }
+    ]
+  }
+]
+	</script>
+  </head>
+  <body>
+    <div id="content">
+      <div class="section" id="metadata">
+        <h1>The TinyML Neural Network Ontology</h1>
+        <h2>Metadata</h2>
+        <dl>
+          <div>
+            <dt>
+              <strong>IRI</strong>
+            </dt>
+            <dd>
+              <code>https://w3id.org/tinyml-schema/neural-network-schema#</code>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/title" title="None. Defined in None">Title</a>
+            </dt>
+            <dd><p>The TinyML Neural Network Ontology</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/creator" title="None. Defined in None">Creator</a>
+            </dt>
+            <dd>
+              <ul>
+                <li>
+                  <span>
+                    <span>Haoyu Ren</span>
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <span>Darko Anicic</span>
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <span>Thomas A. Runkler</span>
+                  </span>
+                </li>
+              </ul>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/issued" title="None. Defined in None">Issued</a>
+            </dt>
+            <dd><p>2022-01-14</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionInfo" title="None. Defined in None">Version Info</a>
+            </dt>
+            <dd><p>3.0</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespacePrefix" title="None. Defined in None">Preferred Namespace Prefix</a>
+            </dt>
+            <dd><p>nnet</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespaceUri" title="None. Defined in None">Preferred Namespace Uri</a>
+            </dt>
+            <dd>
+              <a href="https://w3id.org/tinyml-schema/neural-network-schema#">https://w3id.org/tinyml-schema/neural-network-schema#</a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+            </dt>
+            <dd><p>This is a schema for semantically describing artificial neural networks aligned with the World Wide Web Consortium (W3C) Thing Description, which semantically describes IoT devices. Our goal is to enable the joint management of TinyML models and IoT devices at scale, from modeling information to discovering possible combinations and benchmarking, and eventually facilitate TinyML component exchange and reuse.</p></dd>
+          </div>
+        </dl>
+      </div>
+      <div class="section" id="classes">
+        <h2>Classes</h2>
+        <div class="property entity" id="Aneuralnetwork.">
+          <h3>A neural network.
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#NeuralNetwork</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>A neural network is a computer system modeled on the biological neural networks that form the brains of humans. An NN consists of layers, which can be divided into three categories: the input layer, the middle layer (hidden layer), and the output layer. Layers are composed of many interconnected neurons, each with its weights for participating computation. The input data circulates between layers and results in output.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="http://w3id.org/s3n/Algorithm">s3n:Algorithm</a>
+                  </li>
+                  <li>
+                    <a href="https://schema.org/SoftwareSourceCode">schema:SoftwareSourceCode</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainIncludesOf" title="None. Defined in None">In Domain Includes Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <a href="#inputLayer">inputLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#middleLayer">middleLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#outputLayer">outputLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasMetric">hasMetric</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#trainingDataset">trainingDataset</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasMultiplyAccumulateOps">hasMultiplyAccumulateOps</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasCategory">hasCategory</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="None. Defined in None">Restriction</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <span>
+                        <a href="http://www.w3.org/ns/ssn/hasInput">ssn:hasInput</a>only<br>
+                      </span>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <span>
+                        <a href="http://www.w3.org/ns/ssn/hasOutput">ssn:hasOutput</a>only<br>
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Layer">
+          <h3>Layer
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#Layer</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>A layer of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainIncludesOf" title="None. Defined in None">In Domain Includes Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <a href="#shapeIn">shapeIn</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#shapeOut">shapeOut</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasIndex">hasIndex</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasActivation">hasActivation</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasQuantization">hasQuantization</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#hasType">hasType</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <a href="#inputLayer">inputLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#middleLayer">middleLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#outputLayer">outputLayer</a>
+                      <sup class="sup-p" title="RDF Property">p</sup>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Activation">
+          <h3>Activation
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#Activation</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The type of activation of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="https://schema.org/Enumeration">schema:Enumeration</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasActivation">hasActivation</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Quantization">
+          <h3>Quantization
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#Quantization</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The type of quantization of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="https://schema.org/Enumeration">schema:Enumeration</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasQuantization">hasQuantization</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="LayerType">
+          <h3>LayerType
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#LayerType</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The type of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="https://schema.org/Enumeration">schema:Enumeration</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasType">hasType</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Metric">
+          <h3>Metric
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#Metric</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The metric type used for training the neural network</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="https://schema.org/Enumeration">schema:Enumeration</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainIncludesOf" title="None. Defined in None">In Domain Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasMetricValue">hasMetricValue</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasMetric">hasMetric</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="NetworkCategory">
+          <h3>NetworkCategory
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#NetworkCategory</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The category of the neural network</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <a href="https://schema.org/Enumeration">schema:Enumeration</a>
+                  </li>
+                  <li>
+                    <a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeIncludesOf" title="None. Defined in None">In Range Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasCategory">hasCategory</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="NetworkInput">
+          <h3>NetworkInput
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#NetworkInput</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>A description of the input to the NN.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/ns/ssn/Input">ssn:Input</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainIncludesOf" title="None. Defined in None">In Domain Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasInputInfo">hasInputInfo</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="NetworkOutput">
+          <h3>NetworkOutput
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#NetworkOutput</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>A description of the output from the NN.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="None. Defined in None">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/ns/ssn/Output">ssn:Output</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainIncludesOf" title="None. Defined in None">In Domain Includes Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#hasOutputInfo">hasOutputInfo</a>
+                  <sup class="sup-p" title="RDF Property">p</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="section" id="properties">
+        <h2>Properties</h2>
+        <div class="property entity" id="inputLayer">
+          <h3>inputLayer
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#inputLayer</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The input layer of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="middleLayer">
+          <h3>middleLayer
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#middleLayer</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The middle layer of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="outputLayer">
+          <h3>outputLayer
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#outputLayer</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The output layer of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="shapeIn">
+          <h3>shapeIn
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#shapeIn</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The shape of input of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Number">schema:Number</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="shapeOut">
+          <h3>shapeOut
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#shapeOut</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The shape of output of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Number">schema:Number</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasIndex">
+          <h3>hasIndex
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasIndex</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The index of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Integer">schema:Integer</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasActivation">
+          <h3>hasActivationFunction
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasActivation</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The activation function of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Activation">Activation</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasQuantization">
+          <h3>hasQuantization
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasQuantization</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The quantization of a layer.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Quantization">Quantization</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasType">
+          <h3>hasType
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasType</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The type of a layer of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Layer">Layer</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#LayerType">LayerType</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasMetric">
+          <h3>hasMetric
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasMetric</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The information about the performance of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Metric">Metric</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasMetricValue">
+          <h3>hasMetricValue
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasMetricValue</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The value of the metric of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Metric">Metric</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Number">schema:Number</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="trainingDataset">
+          <h3>trainingDataset
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#trainingDataset</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The information about the used training dataset.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/url">schema:url</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasMultiplyAccumulateOps">
+          <h3>hasMultiplyAccumulateOps
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasMultiplyAccumulateOps</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The muliply accumulate operations count of the neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Number">schema:Number</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasCategory">
+          <h3>hasCategory
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasCategory</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The category of a neural network.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#Aneuralnetwork.">NeuralNetwork</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#NetworkCategory">NetworkCategory</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasInputInfo">
+          <h3>hasInputInfo
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasInputInfo</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The extra information about the NN input.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#NetworkInput">NetworkInput</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Text">schema:Text</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasOutputInfo">
+          <h3>hasOutputInfo
+            <sup class="sup-p" title="RDF Property">p</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://w3id.org/tinyml-schema/neural-network-schema#hasOutputInfo</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="None. Defined in None">Description</a>
+              </th>
+              <td><p>The extra information about the NN output.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/domainIncludes" title="None. Defined in None">Domain Includes</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#NetworkOutput">NetworkOutput</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://schema.org/rangeIncludes" title="None. Defined in None">Range Includes</a>
+              </th>
+              <td>
+                <a href="https://schema.org/Text">schema:Text</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="section" id="annotationproperties">
+        <h2>Annotation Properties</h2>
+        <div class="property entity" id="issued">
+          <h3>issued
+            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://purl.org/dc/terms/issued</code>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="title">
+          <h3>title
+            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://purl.org/dc/terms/title</code>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="preferredNamespacePrefix">
+          <h3>preferred namespace prefix
+            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://purl.org/vocab/vann/preferredNamespacePrefix</code>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="preferredNamespaceUri">
+          <h3>preferred namespace uri
+            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://purl.org/vocab/vann/preferredNamespaceUri</code>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="term_status">
+          <h3>term_status
+            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://www.w3.org/2003/06/sw-vocab-status/ns#term_status</code>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="namespaces">
+        <h2>Namespaces</h2>
+        <dl>
+          <dt id=":">:</dt>
+          <dd>
+            <code>https://w3id.org/tinyml-schema/neural-network-schema#</code>
+          </dd>
+          <dt id="dc1">dc1</dt>
+          <dd>
+            <code>http://purl.org/dc/terms/</code>
+          </dd>
+          <dt id="dcterms">dcterms</dt>
+          <dd>
+            <code>http://purl.org/dc/terms/</code>
+          </dd>
+          <dt id="foaf">foaf</dt>
+          <dd>
+            <code>http://xmlns.com/foaf/0.1/</code>
+          </dd>
+          <dt id="owl">owl</dt>
+          <dd>
+            <code>http://www.w3.org/2002/07/owl#</code>
+          </dd>
+          <dt id="prov">prov</dt>
+          <dd>
+            <code>http://www.w3.org/ns/prov#</code>
+          </dd>
+          <dt id="rdf">rdf</dt>
+          <dd>
+            <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code>
+          </dd>
+          <dt id="rdfs">rdfs</dt>
+          <dd>
+            <code>http://www.w3.org/2000/01/rdf-schema#</code>
+          </dd>
+          <dt id="s3n">s3n</dt>
+          <dd>
+            <code>http://w3id.org/s3n/</code>
+          </dd>
+          <dt id="schema">schema</dt>
+          <dd>
+            <code>https://schema.org/</code>
+          </dd>
+          <dt id="ssn">ssn</dt>
+          <dd>
+            <code>http://www.w3.org/ns/ssn/</code>
+          </dd>
+          <dt id="vann">vann</dt>
+          <dd>
+            <code>http://purl.org/vocab/vann/</code>
+          </dd>
+          <dt id="vs">vs</dt>
+          <dd>
+            <code>http://www.w3.org/2003/06/sw-vocab-status/ns#</code>
+          </dd>
+        </dl>
+      </div>
+      <div id="legend">
+        <h2>Legend</h2>
+        <table class="entity">
+          <tr>
+            <td>
+              <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+            </td>
+            <td>Classes</td>
+          </tr>
+          <tr>
+            <td>
+              <sup class="sup-p" title="RDF Property">p</sup>
+            </td>
+            <td>Properties</td>
+          </tr>
+          <tr>
+            <td>
+              <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
+            </td>
+            <td>Annotation Properties</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div id="pylode">
+      <p>made by 
+        <a href="https://github.com/rdflib/pyLODE">
+          <span id="p">p</span>
+          <span id="y">y</span>
+          <span>LODE</span>
+        </a>
+        <a href="https://github.com/rdflib/pyLODE/release/3.0.1" id="version">3.0.1</a>
+      </p>
+    </div>
+    <div id="toc">
+      <h3>Table of Contents</h3>
+      <ul class="first">
+        <li>
+          <h4>
+            <a href="#metadata">Metadata</a>
+          </h4>
+        </li>
+        <li>
+          <h4>
+            <a href="#classes">Classes</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#Aneuralnetwork.">A neural network.</a>
+            </li>
+            <li>
+              <a href="#Layer">Layer</a>
+            </li>
+            <li>
+              <a href="#Activation">Activation</a>
+            </li>
+            <li>
+              <a href="#Quantization">Quantization</a>
+            </li>
+            <li>
+              <a href="#LayerType">LayerType</a>
+            </li>
+            <li>
+              <a href="#Metric">Metric</a>
+            </li>
+            <li>
+              <a href="#NetworkCategory">NetworkCategory</a>
+            </li>
+            <li>
+              <a href="#NetworkInput">NetworkInput</a>
+            </li>
+            <li>
+              <a href="#NetworkOutput">NetworkOutput</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
+            <a href="#properties">Properties</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#inputLayer">inputLayer</a>
+            </li>
+            <li>
+              <a href="#middleLayer">middleLayer</a>
+            </li>
+            <li>
+              <a href="#outputLayer">outputLayer</a>
+            </li>
+            <li>
+              <a href="#shapeIn">shapeIn</a>
+            </li>
+            <li>
+              <a href="#shapeOut">shapeOut</a>
+            </li>
+            <li>
+              <a href="#hasIndex">hasIndex</a>
+            </li>
+            <li>
+              <a href="#hasActivation">hasActivationFunction</a>
+            </li>
+            <li>
+              <a href="#hasQuantization">hasQuantization</a>
+            </li>
+            <li>
+              <a href="#hasType">hasType</a>
+            </li>
+            <li>
+              <a href="#hasMetric">hasMetric</a>
+            </li>
+            <li>
+              <a href="#hasMetricValue">hasMetricValue</a>
+            </li>
+            <li>
+              <a href="#trainingDataset">trainingDataset</a>
+            </li>
+            <li>
+              <a href="#hasMultiplyAccumulateOps">hasMultiplyAccumulateOps</a>
+            </li>
+            <li>
+              <a href="#hasCategory">hasCategory</a>
+            </li>
+            <li>
+              <a href="#hasInputInfo">hasInputInfo</a>
+            </li>
+            <li>
+              <a href="#hasOutputInfo">hasOutputInfo</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
+            <a href="#annotationproperties">Annotation Properties</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#issued">issued</a>
+            </li>
+            <li>
+              <a href="#title">title</a>
+            </li>
+            <li>
+              <a href="#preferredNamespacePrefix">preferred namespace prefix</a>
+            </li>
+            <li>
+              <a href="#preferredNamespaceUri">preferred namespace uri</a>
+            </li>
+            <li>
+              <a href="#term_status">term_status</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
+            <a href="#namespaces">Namespaces</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#"></a>
+            </li>
+            <li>
+              <a href="#dc1">dc1</a>
+            </li>
+            <li>
+              <a href="#dcterms">dcterms</a>
+            </li>
+            <li>
+              <a href="#foaf">foaf</a>
+            </li>
+            <li>
+              <a href="#owl">owl</a>
+            </li>
+            <li>
+              <a href="#prov">prov</a>
+            </li>
+            <li>
+              <a href="#rdf">rdf</a>
+            </li>
+            <li>
+              <a href="#rdfs">rdfs</a>
+            </li>
+            <li>
+              <a href="#s3n">s3n</a>
+            </li>
+            <li>
+              <a href="#schema">schema</a>
+            </li>
+            <li>
+              <a href="#ssn">ssn</a>
+            </li>
+            <li>
+              <a href="#vann">vann</a>
+            </li>
+            <li>
+              <a href="#vs">vs</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
+            <a href="#legend">Legend</a>
+          </h4>
+          <ul class="second"></ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

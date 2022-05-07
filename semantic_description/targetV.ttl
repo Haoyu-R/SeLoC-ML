@@ -1,0 +1,61 @@
+# baseURI: http://tinyml-schema.org/tiny-demo/targetV-322-000-000-003
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s3n: <http://w3id.org/s3n/> .
+@prefix schema: <https://schema.org/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
+@prefix td: <https://www.w3.org/2019/wot/td#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
+
+@prefix s3n_extend: <http://tinyml-schema.org/s3n_extend/> .
+@prefix sosa_extend: <http://tinyml-schema.org/sosa_extend/> .
+
+<http://tinyml-schema.org/tinyml-demo/targetV-322-000-000-003>
+  rdf:type s3n:SmartSensor ;
+  ssn:hasSubSystem [
+      rdf:type sosa_extend:Thermometer ;
+    ] ;
+  ssn:hasSubSystem [
+      rdf:type s3n:MicroController ;
+      s3n:hasSystemCapability [
+          ssn-system:hasSystemProperty [
+              rdf:type s3n_extend:Flash ;
+              schema:unitCode om:kilobyte ;
+              schema:value 233216 ;
+			  rdfs:comment "Flash."@en ;
+            ] ;
+		  ssn-system:hasSystemProperty [
+		      rdf:type s3n_extend:RAM ;
+		      schema:unitCode om:kilobyte ;
+		      schema:value 210435 ;
+			  rdfs:comment "RAM."@en ;
+		    ] ;
+        ] ;
+      rdfs:comment "SIEMENS TargetV Device."@en ;
+    ] ;
+  td:description "SIEMENS TargetV Device"@en ;
+  td:hasPropertyAffordance [
+      td:description "Temperature data."@en ;
+      td:hasForm [
+          td:href "http://tinyml-schema.org/tinyml-demo/arduino_nano_ble_33-322-000-000-002/temperature"@en ;
+          td:op "observeproperty"@en ;
+          td:op "readproperty"@en ;
+        ] ;
+      td:isObservable "true"^^xsd:boolean ;
+      td:maximum 120 ;
+      td:minimum -40 ;
+      td:readOnly "true"^^xsd:boolean ;
+      td:title "Temperature"@en ;
+      td:type "number"@en ;
+      td:unit "om:degree_Celsius"@en ;
+    ] ;
+  td:hasSecurityConfiguration td:nosec_sc ;
+  td:securityDefinitions [
+      td:scheme "nosec"@en ;
+    ] ;
+  td:title "targetv_1"@en ;
+.

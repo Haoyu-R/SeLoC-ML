@@ -1,0 +1,57 @@
+PREFIX s3n: <http://w3id.org/s3n/>
+PREFIX sosa: <http://www.w3.org/ns/sosa/> 
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ssn-system: <http://www.w3.org/ns/ssn/systems/>
+PREFIX schema: <https://schema.org/>
+PREFIX om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX td: <https://www.w3.org/2019/wot/td#>
+PREFIX nnet: <http://tinyml-schema.org/networkschema#>
+PREFIX s3n_extend: <http://tinyml-schema.org/s3n_extend/> 
+PREFIX sosa_extend: <http://tinyml-schema.org/sosa_extend/> 
+PREFIX ssn_extend: <http://tinyml-schema.org/ssn_extend/>
+
+SELECT ?documentID ?uuid ?Name ?MACs ?RAM ?Flash ?Platform ?Creator ?Description ?Date ?Citation ?Metric ?MetricValue ?InputInfo ?OutputInfo ?Category ?SensorInfo (group_concat(distinct ?SensorType) as ?Sensors){
+    ?search a inst:index_1 ;
+        :searchTerm "visual";
+        :searchParameters "-numsearchresults 2000";
+        :documentResult ?result .
+    ?result :value ?documentID ;
+            :score ?score .
+    ?documentID a nnet:NeuralNetwork ;
+    	schema:name ?Name ;
+        schema:identifier ?uuid ;
+        schema:runtimePlatform ?Platform ;
+        ssn:hasInput ?input ;
+        ssn:hasOutput ?output ;
+        nnet:hasMultiplyAccumulateOps ?MACs ;
+        nnet:hasCategory ?Category ;
+        schema:creator ?Creator ;
+        schema:description ?Description ;
+		schema:dateCreated ?Date ;
+        schema:citation ?Citation ;
+        nnet:hasMetric ?Metric ;
+        s3n:hasProcedureFeature ?x_1 ;
+        s3n:hasProcedureFeature ?x_2 .
+    
+#    	?Category rdf:rest* nnet:Classification .
+    
+    	?input nnet:hasInputInfo ?InputInfo .
+    	?output nnet:hasOutputInfo ?OutputInfo .
+    	?Metric nnet:hasMetricValue ?MetricValue .
+    	?x_1 ssn-system:inCondition ?cond_1 .
+        ?x_2 ssn-system:inCondition ?cond_2 .
+        ?cond_1 a s3n_extend:RAM ;
+    		schema:minValue ?RAM .
+        ?cond_2 a s3n_extend:Flash ;
+    		schema:minValue ?Flash .
+    	?sensor ssn_extend:provideInput ?input;
+             a ?SensorType ;
+             sosa_extend:hasSensorInfo ?SensorInfo .
+    	?SensorType rdfs:subClassOf sosa:Sensor.
+#   		FILTER (?RAM <= 116)
+#        FILTER (?Flash <= 531)
+}
+GROUP BY ?documentID ?uuid ?Name ?MACs ?RAM ?Flash ?Platform ?Creator ?Description ?Date ?Citation ?Metric ?MetricValue ?InputInfo ?OutputInfo ?Category ?SensorInfo
+HAVING (contains(?Sensors, 'Acc') && contains(?Sensors, 'Gy') && (!contains(?Sensors, 'Ca')))

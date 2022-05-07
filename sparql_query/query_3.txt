@@ -1,0 +1,39 @@
+PREFIX s3n: <http://w3id.org/s3n/>
+PREFIX sosa: <http://www.w3.org/ns/sosa/> 
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ssn-system: <http://www.w3.org/ns/ssn/systems/>
+PREFIX schema: <https://schema.org/>
+PREFIX om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX td: <https://www.w3.org/2019/wot/td#>
+PREFIX nnet: <http://tinyml-schema.org/networkschema#>
+PREFIX s3n_extend: <http://tinyml-schema.org/s3n_extend/> 
+PREFIX sosa_extend: <http://tinyml-schema.org/sosa_extend/> 
+PREFIX ssn_extend: <http://tinyml-schema.org/ssn_extend/>
+
+SELECT ?uuid ?Category ?Acc ?MACs ?Min_RAM ?Min_Flash
+WHERE {
+    ?nn a nnet:NeuralNetwork ;
+        schema:identifier ?uuid ;
+        schema:description ?description;
+        ssn:hasInput ?input;
+        nnet:hasCategory ?Category ;
+        nnet:hasMetric ?metric ;
+        nnet:hasMultiplyAccumulateOps ?MACs ;
+        nnet:trainingDataset ?dataset ;
+        s3n:hasProcedureFeature ?x_1 ;
+        s3n:hasProcedureFeature ?x_2 .
+    ?metric a nnet:Top_1_accuracy .
+    ?metric nnet:hasMetricValue ?Acc .
+    ?x_1 ssn-system:inCondition ?cond_1 .
+    ?x_2 ssn-system:inCondition ?cond_2 .
+    ?cond_1 a s3n_extend:RAM ;
+            schema:minValue ?Min_RAM .
+    ?cond_2 a s3n_extend:Flash ;
+            schema:minValue ?Min_Flash .
+    ?sensor ssn_extend:provideInput ?input;
+            a sosa_extend:Microphone .
+    FILTER regex(?description, "yes/no", "i")
+    FILTER regex(str(?dataset), "speech_commands", "i")
+}ORDER BY ?Acc

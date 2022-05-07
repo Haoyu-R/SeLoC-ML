@@ -1,0 +1,32 @@
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ssn-system: <http://www.w3.org/ns/ssn/systems/>
+PREFIX schema: <https://schema.org/>
+PREFIX om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX td: <https://www.w3.org/2019/wot/td#>
+PREFIX nnet: <http://tinyml-schema.org/networkschema#>
+PREFIX s3n_extend: <http://tinyml-schema.org/s3n_extend/> 
+PREFIX sosa_extend: <http://tinyml-schema.org/sosa_extend/> 
+PREFIX ssn_extend: <http://tinyml-schema.org/ssn_extend/>
+
+SELECT ?Board ?RAM ?Flash ?Description (group_concat(distinct ?SensorType) as ?Sensors)
+WHERE { 
+    ?Board a s3n:SmartSensor ;
+    	ssn:hasSubSystem ?system ;
+     	ssn:hasSubSystem ?Sensor ;
+     	td:description ?Description .
+    	?Sensor a ?SensorType .
+    	?SensorType rdfs:subClassOf sosa:Sensor.
+		?system a s3n:MicroController ;
+			s3n:hasSystemCapability ?x .
+		?x ssn-system:hasSystemProperty ?cond_1 .
+        ?x ssn-system:hasSystemProperty ?cond_2 .
+		?cond_1 a s3n_extend:RAM ;
+			schema:value ?RAM ;
+			schema:unitCode om:kilobyte .
+    	?cond_2 a s3n_extend:Flash ;
+			schema:value ?Flash ;
+			schema:unitCode om:kilobyte .
+    }
+GROUP BY ?Board ?RAM ?Flash ?Description ORDER BY ?Description

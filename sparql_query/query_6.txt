@@ -1,0 +1,41 @@
+PREFIX s3n: <http://w3id.org/s3n/>
+PREFIX sosa: <http://www.w3.org/ns/sosa/> 
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ssn-system: <http://www.w3.org/ns/ssn/systems/>
+PREFIX schema: <https://schema.org/>
+PREFIX om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX td: <https://www.w3.org/2019/wot/td#>
+PREFIX nnet: <http://tinyml-schema.org/networkschema#>
+PREFIX s3n_extend: <http://tinyml-schema.org/s3n_extend/> 
+PREFIX sosa_extend: <http://tinyml-schema.org/sosa_extend/> 
+PREFIX ssn_extend: <http://tinyml-schema.org/ssn_extend/>
+
+SELECT distinct ?documentID ?RAM ?Flash ?Description {
+    ?search a inst:index_1 ;
+        :searchTerm "siemens";
+        :searchParameters "-numsearchresults 2000";
+        :documentResult ?result .
+    ?result :value ?documentID ;
+            :score ?score .
+    ?documentID a s3n:SmartSensor ;
+            td:description ?Description ;
+            ssn:hasSubSystem ?system_1 ;
+#            ssn:hasSubSystem ?system_2 ;
+            ssn:hasSubSystem ?system_n .
+        ?system_1 a sosa_extend:Accelerometer .
+#    	?system_2 a sosa_extend:Gyroscope .
+        ?system_n a s3n:MicroController ;
+            s3n:hasSystemCapability ?x .
+        ?x ssn-system:hasSystemProperty ?cond_1 .
+        ?x ssn-system:hasSystemProperty ?cond_2 .
+        ?cond_1 a s3n_extend:RAM ;
+            schema:value ?RAM ;
+            schema:unitCode om:kilobyte .
+        ?cond_2 a s3n_extend:Flash ;
+            schema:value ?Flash ;
+            schema:unitCode om:kilobyte .
+#        FILTER (?RAM >= 53)
+#        FILTER (?Flash >= 31)
+}
