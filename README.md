@@ -5,6 +5,8 @@ Internet of Things (IoT) is transforming the industry by bridging the gap betwee
 For more information on the project, please see our paper
 [Link to be added](https://github.com/Haoyu-R/SeLoC-ML)
 
+![Capture1.PNG](/_resources/Capture1.PNG)
+
 ## Citation
 If our work has been useful for your research and you would like to cite it in an scientific publication, please cite [Link to be updated](https://github.com/Haoyu-R/SeLoC-ML) as follows:
 ```
