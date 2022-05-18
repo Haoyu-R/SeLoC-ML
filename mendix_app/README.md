@@ -10,6 +10,8 @@ Once the project is running, simply press run and the server would start locally
 
 ![image run](./images/mendix_run.png)
 
+<img src="./images/mendix_run.png" width="250">
+
 ## GraphDB Setup
 In our concept, we use [GraphDB](https://graphdb.ontotext.com/documentation/free/) to store and visualize information from Neural Network models and IoT devices in a Knowledge Graph (KG) using the various semantic schemas mentioned in our paper. We are able, then, to synchronize and access such information easily in Mendix by establishing a connection to the server hosting the repository containing the Knowledge Graph as shown in the image below.
 
