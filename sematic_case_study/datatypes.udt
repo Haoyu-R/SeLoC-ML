@@ -1,0 +1,41 @@
+﻿									# REGION_TO_BE_EDITED_TRADITIONAL
+TYPE "typeFWBites"
+VERSION : 0.1
+
+   STRUCT
+      qualityByte : Byte;
+      appError : Bool;
+      sdCardError : Bool;
+      fwLoadError : Bool;
+      ethernetConfigError : Bool;
+      ethernetError : Bool;
+      bit5 : Bool;
+      bit6 : Bool;
+      bit7 : Bool;
+   END_STRUCT;
+
+END_TYPE
+
+TYPE "typeDataReceiveFromNpuResults"
+VERSION : 0.1
+
+   STRUCT
+      fwBytes { S7_SetPoint := 'False'} : "typeFWBites";
+      newDataAvailable : Bool;
+      active : Bool;
+      appStatus : Byte := 16#01; 		# LINE_TO_BE_EDITED_TEMPLATE 
+      results : Array[0..249] of Byte;  # LINE_TO_BE_EDITED_TEMPLATE		# LINE_TO_BE_EDITED_SEMANTIC
+   END_STRUCT;
+
+END_TYPE
+
+TYPE "typeDataSendToNPU"
+VERSION : 0.1
+
+   STRUCT
+      fwBytes { S7_SetPoint := 'False'} : "typeFWBites";
+      inference : Int := 16#01; 		# LINE_TO_BE_EDITED_TEMPLATE
+      trigger : Bool;
+   END_STRUCT;
+
+END_TYPE								# END_REGION_TO_BE_EDITED_TRADITIONAL

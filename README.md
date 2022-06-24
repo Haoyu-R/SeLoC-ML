@@ -20,6 +20,7 @@ To be added
 * [model_server](https://github.com/Haoyu-R/SeLoC-ML/tree/main/model_server): a folder to stimulate a server for hosting the parsed ML models
 * [semantic_description](https://github.com/Haoyu-R/SeLoC-ML/tree/main/semantic_description): the semantic descriptions of the stored NN models and IIoT devices
 * [semantic_schema](https://github.com/Haoyu-R/SeLoC-ML/tree/main/semantic_schema): the ontology for NN and IIoT devices, as well as supplementary schemas
+* [sematic_case_study](https://github.com/Haoyu-R/SeLoC-ML/tree/main/sematic_case_study): the TIA portal engineering project files of the conveyor belt example introduced in the paper
 * [sparql_query](https://github.com/Haoyu-R/SeLoC-ML/tree/main/sparql_query): some example SPARQL queries
 * bin2tflite.py: convert a binary NN model to tflite format
 * jsonld2rdf_things_description.py: Convert a JSONLD-TD file into RDF format
@@ -32,7 +33,7 @@ To be added
 * tflite2semantic_parser_xlsx.py: generate semantic representations of the NN models stored in the folder [collected_models](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) against the [proposed semantic schema](#semantic-schema-of-neural-network) combining the information provided in `models_information.xlsx`
 * tflite2semantic_user_input.py: generate a semantic representation for each given NN model against the [proposed semantic schema](#semantic-schema-of-neural-network) by asking users a few questions
 
-## Use
+## Installation 
 
 Our project is runnable in a Linux environment, as the binary executable is built on Linux environment.
 
@@ -47,11 +48,18 @@ Install the dependency:
 pip install -r requirement.txt
 ```
 
+## Use
+
 Run `tflite2semantic_parser_xlsx.py` to see how the collected models in the [model_repo](https://github.com/Haoyu-R/SeLoC-ML/tree/main/collected_models) can be parsed into semantic representations against the [proposed semantic schema](#semantic-schema-of-neural-network) combining the information provided in `models_information.xlsx` in one go. Please be aware that the order of the models listed in the the folder `collected_models` and in the information sheet `models_information.xlsx` should both be in alphabetic order and match with each other.
 
 Run `tflite2semantic_user_input.py` to see how each model can be parsed into semantic representation by answering a few questions in the CMD.
 
 To work with the semantic representations of neural networks and IoT devices, we recommend using [GraphDB free](https://graphdb.ontotext.com/). The scripts `rdflib_push.py`, `semantic_querying.py`, `sparql_queries.py` contain the code for interacting with GraphDB.
+
+To use the SeLoC-ML Mendix App, please check out our instruction in the folder [mendix_app](https://github.com/Haoyu-R/SeLoC-ML/tree/main/mendix_app)
+
+The TIA portal project files of the conveyor belt example are provided in the folder [sematic_case_study](https://github.com/Haoyu-R/SeLoC-ML/tree/main/sematic_case_study). We documented the code to allow interested readers to easily compare the implementation effort for three different implementation methods introduced in the paper.
+
 
 ## Semantic Schema of Neural Network
 

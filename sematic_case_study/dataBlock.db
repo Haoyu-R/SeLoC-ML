@@ -1,0 +1,15 @@
+﻿                                    # REGION_TO_BE_EDITED_TRADITIONAL
+DATA_BLOCK "ControlData"
+{ S7_Optimized_Access := 'FALSE' }
+NON_RETAIN
+   STRUCT                           # REGION_TO_BE_EDITED_TEMPLATE
+      execute : Bool;
+      inference : Int;
+      results { S7_SetPoint := 'False'} : Array[0..2] of "typeDataReceiveFromNpuResults";  # LINE_TO_BE_EDITED_SEMANTIC		# END_REGION_TO_BE_EDITED_TEMPLATE
+      busy : Bool;
+      error : Bool;
+      done : Bool;
+      END_STRUCT;
+   END_STRUCT;
+BEGIN
+END_DATA_BLOCK                      # END_REGION_TO_BE_EDITED_TRADITIONAL
