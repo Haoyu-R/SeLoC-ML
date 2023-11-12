@@ -10,7 +10,20 @@ For more information on the project, please see our paper
 ## Citation
 If our work has been useful for your research and you would like to cite it in an scientific publication, please cite [Link to be updated](https://github.com/Haoyu-R/SeLoC-ML) as follows:
 ```
-To be added
+@InProceedings{Ren2022,
+  author    = {Ren, Haoyu and Dorofeev, Kirill and Anicic, Darko and Hammad, Youssef and Eckl, Roland and Runkler, Thomas A.},
+  booktitle = {The Semantic Web -- ISWC 2022},
+  title     = {SeLoC-ML: Semantic Low-Code Engineering for Machine Learning Applications in Industrial IoT},
+  year      = {2022},
+  address   = {Cham},
+  editor    = {Sattler, Ulrike and Hogan, Aidan and Keet, Maria and Presutti, Valentina and Almeida, Jo{\~a}o Paulo A. and Takeda, Hideaki and Monnin, Pierre and Pirr{\`o}, Giuseppe and d'Amato, Claudia},
+  pages     = {845--862},
+  publisher = {Springer International Publishing},
+  abstract  = {Internet of Things (IoT) is transforming the industry by bridging the gap between Information Technology (IT) and Operational Technology (OT). Machines are being integrated with connected sensors and managed by intelligent analytics applications, accelerating digital transformation and business operations. Bringing Machine Learning (ML) to industrial devices is an advancement aiming to promote the convergence of IT and OT. However, developing an ML application in Industrial IoT (IIoT) presents various challenges, including hardware heterogeneity, non-standardized representations of ML models, device and ML model compatibility issues, and slow application development. Successful deployment in this area requires a deep understanding of hardware, algorithms, software tools, and applications. Therefore, this paper presents a framework called Semantic Low-Code Engineering for ML Applications (SeLoC-ML), built on a low-code platform to support the rapid development of ML applications in IIoT by leveraging Semantic Web technologies. SeLoC-ML enables non-experts to easily model, discover, reuse, and matchmake ML models and devices at scale. The project code can be automatically generated for deployment on hardware based on the matching results. Developers can benefit from semantic application templates, called recipes, to fast prototype end-user applications. The evaluations confirm an engineering effort reduction by a factor of at least three compared to traditional approaches on an industrial ML classification case study, showing the efficiency and usefulness of SeLoC-ML. We share the code and welcome any contributions (https://github.com/Haoyu-R/SeLoC-ML).},
+  doi       = {10.1007/978-3-031-19433-7_48},
+  isbn      = {978-3-031-19433-7},
+}
+
 ```
 
 ## Project Structure
